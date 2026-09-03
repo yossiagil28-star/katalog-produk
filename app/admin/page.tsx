@@ -1,4 +1,5 @@
 "use client";
+const ADMIN_EMAIL = "yossiagil28@gmail.com";
 
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -272,9 +273,29 @@ async function uploadImage(productId: number, file: File) {
   }
 
   if (!session) {
-    return <Login />;
-  }
+  return <Login />;
+}
 
+if (session.user.email !== ADMIN_EMAIL) {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-2xl shadow text-center">
+        <h1 className="text-2xl font-bold text-red-600">
+          Akses Ditolak
+        </h1>
+        <p className="mt-2 text-gray-600">
+          Anda tidak memiliki akses ke halaman admin.
+        </p>
+        <button
+          onClick={logout}
+          className="mt-6 bg-red-600 text-white px-5 py-2 rounded-lg font-semibold"
+        >
+          Logout
+        </button>
+      </div>
+    </main>
+  );
+}
   return (
     <main className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
